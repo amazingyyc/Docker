@@ -98,14 +98,11 @@ COPY download_hadoop_from_mirror.py /
 RUN apt-get update \
 && apt-get install -y \
 default-jre-headless \
-python \
 && python download_hadoop_from_mirror.py $HADOOP_VERSION \
 && rm download_hadoop_from_mirror.py \
 && tar -xzf hadoop-*.tar.gz \
 && rm hadoop-*.tar.gz \
 && mv /hadoop-* /hadoop \
-&& apt-get remove --purge -y python \
-&& apt-get autoremove --purge -y \
 && rm -rf /var/lib/lists/* /tmp/* /var/tmp/*
 
 ENV PATH /hadoop/sbin:/hadoop/bin:$PATH
