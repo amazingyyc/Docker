@@ -1,15 +1,20 @@
 FROM uber/horovod:0.15.2-tf1.12.0-torch1.0.0-py2.7
 
-# install what the fuck
-RUN apt-get update && apt-get install -y --no-install-recommends python-software-properties software-properties-common
+# Install OpenJDK-8
+RUN apt-get update && \
+    apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends openjdk-8-jdk && \
+    apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends ant && \
+    apt-get clean;
 
-# Install java
-RUN add-apt-repository -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ppa:openjdk-r/ppa && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-    openjdk-8-jdk openjdk-8-jre-headless && \
+# Fix certificate issues
+RUN apt-get update && \
+    apt-get install ca-certificates-java && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    update-ca-certificates -f;
+
+# Setup JAVA_HOME -- useful for docker commandline
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
 
 ENV HADOOP_VERSION 2.7.3
 RUN curl -O https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
@@ -17,7 +22,7 @@ RUN curl -O https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VERSION}
     mv hadoop-${HADOOP_VERSION} /usr/local/hadoop && \
     rm hadoop-${HADOOP_VERSION}.tar.gz
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+# ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV HADOOP_INSTALL /usr/local/hadoop
 ENV HADOOP_HDFS_HOME $HADOOP_INSTALL
 ENV HADOOP_COMMON_LIB_NATIVE_DIR $HADOOP_INSTALL/lib/native
