@@ -1,5 +1,8 @@
 FROM uber/horovod:0.15.2-tf1.12.0-torch1.0.0-py2.7
 
+# install what the fuck
+RUN apt-get update && apt-get install -y --no-install-recommends python-software-properties software-properties-common
+
 # Install java
 RUN add-apt-repository -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ppa:openjdk-r/ppa && \
     apt-get update && \
