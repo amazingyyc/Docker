@@ -10,6 +10,8 @@ ENV NCCL_VERSION=2.3.5-2+cuda9.0
 ARG python=2.7
 ENV PYTHON_VERSION=${python}
 
+RUN apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends apt-utils
+
 RUN apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends \
         build-essential \
         cmake \
@@ -36,16 +38,21 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
 RUN pip install tensorflow-gpu==${TENSORFLOW_VERSION} keras h5py torch==${PYTORCH_VERSION} torchvision
 
 # Install Open MPI
-RUN mkdir /tmp/openmpi && \
-    cd /tmp/openmpi && \
-    wget https://www.open-mpi.org/software/ompi/v3.1/downloads/openmpi-3.1.2.tar.gz && \
-    tar zxf openmpi-3.1.2.tar.gz && \
-    cd openmpi-3.1.2 && \
-    ./configure --enable-orterun-prefix-by-default && \
-    make -j $(nproc) all && \
-    make install && \
-    ldconfig && \
-    rm -rf /tmp/openmpi
+# RUN mkdir /tmp/openmpi && \
+#     cd /tmp/openmpi && \
+#     wget https://www.open-mpi.org/software/ompi/v3.1/downloads/openmpi-3.1.2.tar.gz && \
+#     tar zxf openmpi-3.1.2.tar.gz && \
+#     cd openmpi-3.1.2 && \
+#     ./configure --enable-orterun-prefix-by-default && \
+#     make -j $(nproc) all && \
+#     make install && \
+#     ldconfig && \
+#     rm -rf /tmp/openmpi
+
+RUN apt-get update -y && \
+apt-get upgrade -y && \
+apt-get install -y  --allow-downgrades --allow-remove-essential --allow-change-held-packages openssh-server  --no-install-recommends python-mpi4py python-numpy \
+python-virtualenv python-scipy gcc gfortran openmpi-checkpoint binutils
 
 # Install Horovod, temporarily using CUDA stubs
 RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
