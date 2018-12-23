@@ -10,7 +10,7 @@ ENV NCCL_VERSION=2.3.5-2+cuda9.0
 ARG python=2.7
 ENV PYTHON_VERSION=${python}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --allow-downgrades --no-install-recommends \
         build-essential \
         cmake \
         git \
@@ -68,7 +68,7 @@ RUN echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params
 RUN echo NCCL_DEBUG=INFO >> /etc/nccl.conf
 
 # Install OpenSSH for MPI to communicate between containers
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+RUN apt-get install -y --allow-downgrades --no-install-recommends openssh-client openssh-server && \
     mkdir -p /var/run/sshd
 
 # Allow OpenSSH to talk to containers without asking for confirmation
@@ -77,7 +77,7 @@ RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_confi
     mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
 
 # Download examples
-RUN apt-get install -y --no-install-recommends subversion && \
+RUN apt-get install -y  --allow-downgrades --no-install-recommends subversion && \
     svn checkout https://github.com/uber/horovod/trunk/examples && \
     rm -rf /examples/.svn
 
