@@ -1,4 +1,4 @@
-FROM uber/horovod0.15.2-tf1.12.0-torch1.0.0-py2.7
+FROM uber/horovod:0.15.2-tf1.12.0-torch1.0.0-py2.7
 
 # Install java
 RUN add-apt-repository -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ppa:openjdk-r/ppa && \
