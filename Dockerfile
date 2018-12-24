@@ -10,7 +10,7 @@ ENV NCCL_VERSION=2.3.5-2+cuda9.0
 ARG python=2.7
 ENV PYTHON_VERSION=${python}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends \
         build-essential \
         cmake \
         git \
@@ -69,7 +69,7 @@ RUN echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
     echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf
 
 # Install OpenSSH for MPI to communicate between containers
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+RUN apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends openssh-client openssh-server && \
     mkdir -p /var/run/sshd
 
 # Allow OpenSSH to talk to containers without asking for confirmation
