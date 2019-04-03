@@ -9,8 +9,9 @@ FROM albafica/horovod0.15.2:cuda9.0-tf1.12-intel-mpi
 ENV PYTORCH_VERSION=1.0.0
 
 # Install pytorch
-RUN pip3 install ––no-cache-dir torch==${PYTORCH_VERSION} && \
-    pip install ––no-cache-dir torch==${PYTORCH_VERSION} && \
+RUN export LC_ALL=C && \
+    pip3 install --no-cache-dir torch==1.0.0 && \
+    pip install --no-cache-dir torch==1.0.0 && \
     pip uninstall horovod==0.15.2 && \
     pip3 uninstall horovod==0.15.2 && \
     mkdir /tmp/Horovod && \
@@ -18,7 +19,6 @@ RUN pip3 install ––no-cache-dir torch==${PYTORCH_VERSION} && \
     git clone --recursive https://github.com/amazingyyc/horovod.git && \
     cd horovod && \
     git checkout -b bert && \
-    export LC_ALL=C && \
     python setup.py sdist && \ 
     pip install dist/horovod-0.15.2.tar.gz && \
     pip3 install dist/horovod-0.15.2.tar.gz && \
