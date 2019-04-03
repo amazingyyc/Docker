@@ -11,9 +11,7 @@ ENV PYTORCH_VERSION=1.0.0
 # Install pytorch
 RUN pip3 install –no-cache-dir torch==${PYTORCH_VERSION} && \
     pip install –no-cache-dir torch==${PYTORCH_VERSION} && \
-    ldconfig
-
-RUN pip uninstall horovod==0.15.2 && \
+    pip uninstall horovod==0.15.2 && \
     pip3 uninstall horovod==0.15.2 && \
     mkdir /tmp/Horovod && \
     cd /tmp/Horovod && \
