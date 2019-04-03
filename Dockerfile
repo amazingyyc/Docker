@@ -9,8 +9,8 @@ FROM albafica/horovod0.15.2:cuda9.0-tf1.12-intel-mpi
 ENV PYTORCH_VERSION=1.0.0
 
 # Install pytorch
-RUN pip3 install –no-cache-dir torch==${PYTORCH_VERSION} && \
-    pip install –no-cache-dir torch==${PYTORCH_VERSION} && \
+RUN pip3 install -–no-cache-dir torch==${PYTORCH_VERSION} && \
+    pip install -–no-cache-dir torch==${PYTORCH_VERSION} && \
     pip uninstall horovod==0.15.2 && \
     pip3 uninstall horovod==0.15.2 && \
     mkdir /tmp/Horovod && \
