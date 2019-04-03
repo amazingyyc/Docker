@@ -20,7 +20,7 @@ RUN export LC_ALL=C && \
     cd horovod && \
     git checkout -b bert && \
     python setup.py sdist && \ 
-    pip install dist/horovod-0.15.2.tar.gz && \
-    pip3 install dist/horovod-0.15.2.tar.gz && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip install dist/horovod-0.15.2.tar.gz && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip3 install dist/horovod-0.15.2.tar.gz && \
     rm -rf /tmp/Horovod && \
     ldconfig
