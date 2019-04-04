@@ -18,7 +18,7 @@ RUN export LC_ALL=C && \
     cd /tmp/Horovod && \
     git clone --recursive https://github.com/amazingyyc/horovod.git && \
     cd horovod && \
-    git checkout -b bert && \
+    git checkout -b bert origin/bert && \
     python setup.py sdist && \ 
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip install dist/horovod-0.15.2.tar.gz && \
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip3 install dist/horovod-0.15.2.tar.gz && \
