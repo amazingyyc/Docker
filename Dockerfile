@@ -18,9 +18,13 @@ RUN export LC_ALL=C && \
     cd /tmp/Horovod && \
     git clone --recursive https://github.com/amazingyyc/horovod.git && \
     cd horovod && \
-    git checkout -b bert origin/bert && \
+    git checkout -b v0.15.2barrier origin/v0.15.2barrier && \
     python setup.py sdist && \ 
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip install dist/horovod-0.15.2.tar.gz && \
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip3 install dist/horovod-0.15.2.tar.gz && \
     rm -rf /tmp/Horovod && \
     ldconfig
+
+# update LD_LIBRARY_PATH avoid error in DLTS
+ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64/:/usr/local/cuda/extras/CUPTI/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server"
+RUN ldconfig
