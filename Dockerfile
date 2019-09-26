@@ -1,30 +1,7 @@
-# Tag: nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
-# Label: com.nvidia.cuda.version: 9.0.176
-# Label: com.nvidia.cudnn.version: 7.1.2.21
-# Label: com.nvidia.volumes.needed: nvidia_driver
-# Label: maintainer: NVIDIA CORPORATION <cudatools@nvidia.com>
-# Ubuntu 16.04
-FROM albafica/horovod0.15.2:cuda9.0-tf1.12-intel-mpi
+FROM amazingyyc/horovod_barrier:latest
 
-ENV PYTORCH_VERSION=1.0.0
-
-# Install pytorch
-RUN export LC_ALL=C && \
-    pip3 install --no-cache-dir torch==1.0.0 && \
-    pip install --no-cache-dir torch==1.0.0 && \
-    pip uninstall -y horovod && \
-    pip3 uninstall -y horovod && \
-    mkdir /tmp/Horovod && \
-    cd /tmp/Horovod && \
-    git clone --recursive https://github.com/amazingyyc/horovod.git && \
-    cd horovod && \
-    git checkout -b v0.15.2barrier origin/v0.15.2barrier && \
-    python setup.py sdist && \ 
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip install dist/horovod-0.15.2.tar.gz && \
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=0 pip3 install dist/horovod-0.15.2.tar.gz && \
-    rm -rf /tmp/Horovod && \
-    ldconfig
-
-# update LD_LIBRARY_PATH avoid error in DLTS
-ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64/:/usr/local/cuda/extras/CUPTI/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server"
-RUN ldconfig
+# Install zsh
+RUN apt-get update && apt-get -y install curl zsh git 
+RUN zsh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" ||true
+RUN git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions -y
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting -y
