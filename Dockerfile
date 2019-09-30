@@ -1,4 +1,4 @@
-FROM horovod/horovod:0.15.2-tf1.12.0-torch1.0.0-py3.5
+FROM horovod/horovod:0.16.4-tf1.12.0-torch1.1.0-mxnet1.4.1-py3.5
 
 # Install zsh
 RUN apt-get update && apt-get -y install curl zsh git 
